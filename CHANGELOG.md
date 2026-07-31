@@ -3,7 +3,22 @@
 Format mengikuti [Keep a Changelog](https://keepachangelog.com/). Versi SemVer.
 
 
+## [1.2.0] - 2026-08-01
+
+### Added
+
+- Versi aplikasi kini tampil dinamis di judul window (contoh: `Split Tunnel Manager v1.2.0`). Versi dibaca otomatis dari `CHANGELOG.md` menggunakan `//go:embed` sehingga tidak perlu mengubah kode saat rilis baru.
+- `build.bat` kini menampilkan menu interaktif dengan 3 pilihan mode build:
+  - **[1] Build Normal** — Sembunyikan Terminal (Mode Produksi).
+  - **[2] Build Debug** — Tampilkan Terminal untuk melihat log/error.
+  - **[3] Build Compressed** — Menggunakan UPX untuk mengurangi ukuran file dari ~29 MB menjadi ~13 MB. UPX diunduh otomatis dari GitHub jika belum ada.
+
+### Changed
+
+- `build.bat` ditambahkan flag `-trimpath` untuk menghapus path absolut lokal dari binary (lebih kecil & lebih aman).
+
 ## [1.1.0] - 2026-07-31
+
 
 ### Fixed
 
