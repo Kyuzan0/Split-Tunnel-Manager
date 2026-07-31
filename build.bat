@@ -2,6 +2,14 @@
 setlocal
 cd /d "%~dp0"
 
+set "APP_VER=v0.0.0"
+for /f "tokens=2 delims=[]" %%i in ('findstr /b /r "## \[[0-9]" CHANGELOG.md') do (
+    set "APP_VER=v%%i"
+    goto found_ver
+)
+:found_ver
+set "EXE_NAME=Split Tunnel Manager %APP_VER%.exe"
+
 echo ========================================================
 echo Membangun Split Tunnel Manager...
 echo ========================================================
@@ -24,7 +32,7 @@ if exist "C:\msys64\ucrt64\bin\gcc.exe" set "PATH=C:\msys64\ucrt64\bin;%PATH%"
 where gcc >nul 2>nul
 if %errorlevel% neq 0 (
     echo [ERROR] GCC tetap tidak ditemukan! Silakan buka Terminal di VS Code dan jalankan:
-    echo go build -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
+    echo go build -ldflags="-s -w -H=windowsgui" -o "bin\%EXE_NAME%" .
     goto :error
 )
 echo GCC berhasil ditemukan dan ditambahkan ke sesi ini!
@@ -53,7 +61,7 @@ echo Menjalankan go build [Mode UPX COMPRESSED]...
 set CGO_ENABLED=1
 set CGO_CFLAGS=-g0
 set CGO_LDFLAGS=-g0
-go build -trimpath -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
+go build -trimpath -ldflags="-s -w -H=windowsgui" -o "bin\%EXE_NAME%" .
 if %errorlevel% neq 0 goto :error
 echo Mengecek UPX...
 if not exist "tools\upx.exe" (
@@ -66,7 +74,7 @@ if not exist "tools\upx.exe" (
     rmdir /s /q "tools\upx-4.2.4-win64"
 )
 echo Mengkompresi menggunakan UPX...
-"tools\upx.exe" -9 "bin\Split Tunnel Manager.exe"
+"tools\upx.exe" -9 "bin\%EXE_NAME%"
 goto build_done
 
 :build_debug
@@ -75,7 +83,7 @@ echo Menjalankan go build [Mode DEBUG]...
 set CGO_ENABLED=1
 set CGO_CFLAGS=-g0
 set CGO_LDFLAGS=-g0
-go build -trimpath -ldflags="-s -w" -o "bin\Split Tunnel Manager.exe" .
+go build -trimpath -ldflags="-s -w" -o "bin\%EXE_NAME%" .
 if %errorlevel% neq 0 goto :error
 goto build_done
 
@@ -85,15 +93,15 @@ echo Menjalankan go build [Mode NORMAL]...
 set CGO_ENABLED=1
 set CGO_CFLAGS=-g0
 set CGO_LDFLAGS=-g0
-go build -trimpath -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
+go build -trimpath -ldflags="-s -w -H=windowsgui" -o "bin\%EXE_NAME%" .
 if %errorlevel% neq 0 goto :error
 goto build_done
 
 :build_done
 echo.
 echo ========================================================
-echo [SUKSES] Executable tersimpan di bin\Split Tunnel Manager.exe!
-echo Anda wajib menjalankan "Split Tunnel Manager.exe" tersebut dengan klik kanan -^> "Run as Administrator"
+echo [SUKSES] Executable tersimpan di bin\%EXE_NAME%!
+echo Anda wajib menjalankan "%EXE_NAME%" tersebut dengan klik kanan -^> "Run as Administrator"
 echo ========================================================
 pause
 endlocal
