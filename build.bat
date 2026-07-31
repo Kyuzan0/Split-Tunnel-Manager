@@ -40,7 +40,7 @@ echo Menjalankan go build...
 set CGO_ENABLED=1
 set CGO_CFLAGS=-g0
 set CGO_LDFLAGS=-g0
-go build -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
+go build -trimpath -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
 
 if %errorlevel% neq 0 goto :error
 
