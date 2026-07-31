@@ -31,8 +31,15 @@ echo GCC berhasil ditemukan dan ditambahkan ke sesi ini!
 
 :build_step
 
+if exist "Icon.ico" (
+    echo Meng-embed icon ke Windows resource...
+    go run github.com/akavel/rsrc@v0.10.2 -ico Icon.ico -o rsrc.syso >nul 2>nul
+)
+
 echo Menjalankan go build...
 set CGO_ENABLED=1
+set CGO_CFLAGS=-g0
+set CGO_LDFLAGS=-g0
 go build -ldflags="-s -w -H=windowsgui" -o "bin\Split Tunnel Manager.exe" .
 
 if %errorlevel% neq 0 goto :error
