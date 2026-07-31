@@ -92,7 +92,7 @@ func main() {
 	a := fyneapp.NewWithID("com.splittunnel.manager")
 	a.SetIcon(resourceIconPng)
 	a.Settings().SetTheme(&customTheme{})
-	w := a.NewWindow("Split Tunnel Manager")
+	w := a.NewWindow("Split Tunnel Manager v1.1.0")
 	w.Resize(fyne.NewSize(750, 550))
 	w.SetContent(shell.New(shell.Deps{
 		Store: st,
