@@ -1,10 +1,13 @@
 package main
 
 import (
+	_ "embed"
 	"image/color"
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
+	"strings"
 	"syscall"
 
 	"golang.org/x/sys/windows"
@@ -18,6 +21,20 @@ import (
 	"split-tunnel-manager/internal/store"
 	"split-tunnel-manager/internal/ui/shell"
 )
+
+//go:embed CHANGELOG.md
+var changelog string
+
+func getAppVersion() string {
+	lines := strings.Split(changelog, "\n")
+	re := regexp.MustCompile(`^## \[([^\]]+)\]`)
+	for _, line := range lines {
+		if match := re.FindStringSubmatch(strings.TrimSpace(line)); match != nil {
+			return "v" + match[1]
+		}
+	}
+	return "v0.0.0"
+}
 
 func isAdmin() bool {
 	var sid *windows.SID
@@ -92,7 +109,7 @@ func main() {
 	a := fyneapp.NewWithID("com.splittunnel.manager")
 	a.SetIcon(resourceIconPng)
 	a.Settings().SetTheme(&customTheme{})
-	w := a.NewWindow("Split Tunnel Manager v1.1.0")
+	w := a.NewWindow("Split Tunnel Manager " + getAppVersion())
 	w.Resize(fyne.NewSize(750, 550))
 	w.SetContent(shell.New(shell.Deps{
 		Store: st,
