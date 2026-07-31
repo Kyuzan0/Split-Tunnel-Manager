@@ -90,6 +90,7 @@ func main() {
 	chk := netcheck.NewChecker("", 0)
 
 	a := fyneapp.NewWithID("com.splittunnel.manager")
+	a.SetIcon(resourceIconPng)
 	a.Settings().SetTheme(&customTheme{})
 	w := a.NewWindow("Split Tunnel Manager")
 	w.Resize(fyne.NewSize(750, 550))
